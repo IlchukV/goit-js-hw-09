@@ -13,6 +13,7 @@ secondsRef: document.querySelector(".value[data-seconds]")
 
 let intervalId = null;
 
+//flatpickr function parameters object
 const options = {
   enableTime: true,
   time_24hr: true,
@@ -29,20 +30,24 @@ const options = {
   },
 };
 
-
+//hang the listener on the Start button
 refs.btnStart.addEventListener('click', countdown);
 
+//flatpickr function - - select the final date and time in one element of the interface
 flatpickr(refs.datetimePicker, options );
 
+//countdown function 
 function countdown() {
 	intervalId = setInterval(setTime, 1000);
 }
 
-
+//function that calculates the time difference
 function setTime() {
 	const selectedDate = new Date(refs.datetimePicker.value);
 	const nowDate = new Date();
-	const dif = selectedDate - nowDate
+    const dif = selectedDate - nowDate
+    
+    // if the time difference is less than 1 second - clear the interval
 	if ( dif < 1000) {
 		clearInterval(intervalId);
 		Notiflix.Report.success('Time is up', 'Countdown is over', 'ok');
@@ -58,8 +63,9 @@ function setTime() {
 	refs.btnStart.disabled = true;
 }
 
-
+//function that converts the current milliseconds to days, hours...
 function convertMs(ms) {
+
   // Number of milliseconds per unit of time
   const second = 1000;
   const minute = second * 60;
@@ -78,6 +84,7 @@ function convertMs(ms) {
   return { days, hours, minutes, seconds };
 };
 
+// a function that adds 2 zeros to date and time values
 function addLeadingZero(value) {
 	return  value.toString().padStart(2, '0');
 };
